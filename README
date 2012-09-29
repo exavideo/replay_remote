@@ -1,0 +1,64 @@
+Exavideo Replay Remote
+----------------------
+
+This program will attempt to get M-JPEG format video out of a USB connected
+webcam. Video is stored in a circular FIFO buffer; the buffer size is limited
+only by the amount of RAM that can be devoted to it. When a DUMP command is
+issued, the circular buffer is marked at a position some number of frames
+before the current write position, and the video is written to stdout.
+Use this with cheap webcams (i.e. Microsoft Lifecams) and embedded devices
+(i.e. MK802s) to put cameras in hazardous locations (i.e. hockey goals).
+
+Commands are accepted on standard input and are terminated by a newline.
+They may contain any of the following.
+
+DUMP - dump video
+The video buffer is dumped to standard output. A number of frames from
+before the DUMP command are sent, then any remaining frames after the
+DUMP command. Recording is suspended during the dump operation. The split
+between preroll and postroll is currently fixed at 200 frames although
+this may be changed in the function dump_buffer() in replay_remote.cpp.
+
+AUTOWHITEBAL - engage automatic white balance
+Attempts to engage the camera's automatic white balance function.
+
+WHITEBAL <temp> - manually white-balance the camera
+temp: color temperature to white-balance to in Kelvin
+This command attempts to disengage the webcam's automatic white balance
+function and manually set the color temperature to the provided value.
+
+GAIN <value> - adjust gain/brightness setting
+This adjusts the "brightness" control on the camera, which seems like
+gain on the Microsoft webcams I've been using.
+
+SHUTTER <value> - adjust shutter speed
+Mess with this if you want. I'm not sure of the units. May cause the camera
+frame rate to change.
+
+AUTOSHUTTER - try to go to auto-shutter mode
+Undo any manual shutter speed adjustments made earlier (hopefully)
+
+FOCUS <value> - Focus the camera manually.
+The <value> corresponds to the focus distance.
+
+AUTOFOCUS - Set the camera back to autofocus mode
+
+EXIT - end the program
+
+License
+-------
+Copyright 2012 Exavideo LLC.
+
+This is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
